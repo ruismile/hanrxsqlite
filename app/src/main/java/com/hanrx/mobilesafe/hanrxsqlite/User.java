@@ -2,14 +2,20 @@ package com.hanrx.mobilesafe.hanrxsqlite;
 
 import com.hanrx.mobilesafe.hanrxsqlite.db.annotion.DbFiled;
 import com.hanrx.mobilesafe.hanrxsqlite.db.annotion.DbTable;
-
-@DbTable("tb_comment")
+@DbTable("tb_user")
 public class User {
 
-    @DbFiled("tb_name")
+    public User(String name, String password) {
+        this.name = name;
+        this.password = password;
+    }
+
+    public User(){}
+
+    @DbFiled("name")
     public String name;
 
-    @DbFiled("tb_password")
+    @DbFiled("password")
     public String password;
 
 }

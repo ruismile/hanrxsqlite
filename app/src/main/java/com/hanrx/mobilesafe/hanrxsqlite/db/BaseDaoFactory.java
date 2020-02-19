@@ -11,7 +11,7 @@ public class BaseDaoFactory {
     private static BaseDaoFactory instance = new BaseDaoFactory();
 
     public BaseDaoFactory() {
-        mSqliteDatebasePath = Environment.getDataDirectory().getAbsolutePath() + "user.db";
+        mSqliteDatebasePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/teacher.db";
         openDatebase();
     }
 
@@ -30,7 +30,7 @@ public class BaseDaoFactory {
     }
 
     private void openDatebase() {
-        this.mSQLiteDatabase = SQLiteDatabase.openDatabase(mSqliteDatebasePath, null);
+        this.mSQLiteDatabase = SQLiteDatabase.openOrCreateDatabase(mSqliteDatebasePath, null);
     }
 
     public static BaseDaoFactory getInstance() {
