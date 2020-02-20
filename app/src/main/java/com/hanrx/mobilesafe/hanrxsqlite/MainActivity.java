@@ -28,9 +28,13 @@ public class MainActivity extends AppCompatActivity {
     public void update(View view) {
         User where = new User();
         where.setName("teacher");
-
-
         User user = new User("David", "123456789");
         mBaseDao.update(user,where);
+    }
+
+    public void delete(View view) {
+        User user = new User();
+        user.setName("David");
+        mBaseDao.delete(user);
     }
 }

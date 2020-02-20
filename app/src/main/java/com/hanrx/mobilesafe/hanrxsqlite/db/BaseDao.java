@@ -226,7 +226,10 @@ public abstract class BaseDao<T> implements IBaseDao<T> {
 
     @Override
     public int delete(T where) {
-        return 0;
+        Map map = getValues(where);
+        Condition condition = new Condition(map);
+        int result = mDatabase.delete(tableName, condition.getWhereClause(), condition.getWhereArgs());
+        return result;
     }
 
     @Override
