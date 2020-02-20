@@ -1,5 +1,7 @@
 package com.hanrx.mobilesafe.hanrxsqlite.db;
 
+import java.util.List;
+
 public interface IBaseDao<T> {
 
     /**
@@ -15,5 +17,21 @@ public interface IBaseDao<T> {
      * @param where
      * @return
      */
-    Long update(T entity, T where);
+    int update(T entity, T where);
+
+    /**
+     * 删除数据
+     * @param where
+     * @return
+     */
+    int delete(T where);
+
+    /**
+     * 查询数据
+     * @param where
+     * @return
+     */
+    List<T> query(T where);
+
+    List<T> query(T where, String orderBy, Integer startIndex, Integer limit);
 }

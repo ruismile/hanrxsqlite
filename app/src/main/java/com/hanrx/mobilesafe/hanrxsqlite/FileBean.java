@@ -6,7 +6,7 @@ import com.hanrx.mobilesafe.hanrxsqlite.db.annotion.DbTable;
 public class FileBean {
     public String time;
     public String path;
-    public String decripte;
+    public String decription;
 
     public String getTime() {
         return time;
@@ -24,12 +24,12 @@ public class FileBean {
         this.path = path;
     }
 
-    public String getDecripte() {
-        return decripte;
+    public String getDecription() {
+        return decription;
     }
 
-    public void setDecripte(String decripte) {
-        this.decripte = decripte;
+    public void setDecription(String decription) {
+        this.decription = decription;
     }
 
 

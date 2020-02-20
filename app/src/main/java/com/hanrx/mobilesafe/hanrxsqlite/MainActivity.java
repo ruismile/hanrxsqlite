@@ -11,6 +11,8 @@ public class MainActivity extends AppCompatActivity {
 
     IBaseDao<User> mBaseDao;
 
+    IBaseDao<FileBean> mFileDao;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,5 +23,14 @@ public class MainActivity extends AppCompatActivity {
     public void save(View view) {
         User user = new User("teacher", "123456");
         mBaseDao.insert(user);
+    }
+
+    public void update(View view) {
+        User where = new User();
+        where.setName("teacher");
+
+
+        User user = new User("David", "123456789");
+        mBaseDao.update(user,where);
     }
 }

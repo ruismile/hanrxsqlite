@@ -11,7 +11,7 @@ public class BaseDaoFactory {
     private static BaseDaoFactory instance = new BaseDaoFactory();
 
     public BaseDaoFactory() {
-        mSqliteDatebasePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/teacher.db";
+        mSqliteDatebasePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/logic.db";
         openDatebase();
     }
 

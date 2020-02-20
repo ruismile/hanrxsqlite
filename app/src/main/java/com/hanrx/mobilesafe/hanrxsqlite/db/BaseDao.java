@@ -9,8 +9,10 @@ import com.hanrx.mobilesafe.hanrxsqlite.db.annotion.DbFiled;
 import com.hanrx.mobilesafe.hanrxsqlite.db.annotion.DbTable;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -166,7 +168,74 @@ public abstract class BaseDao<T> implements IBaseDao<T> {
     }
 
     @Override
-    public Long update(T entity, T where) {
+    public int update(T entity, T where) {
+        int result = -1;
+        Map values = getValues(entity);
+        //将条件对象转换Map
+        Map whereClause = getValues(where);
+
+        Condition condition = new Condition(whereClause);
+        ContentValues contentValues = getContentValues(values);
+        result = mDatabase.update(tableName, contentValues, condition.getWhereClause(), condition.getWhereArgs());
+        return result;
+    }
+
+    /**
+     * 封装修改语句
+     */
+    class Condition {
+        public String getWhereClause() {
+            return whereClause;
+        }
+
+        public void setWhereClause(String whereClause) {
+            this.whereClause = whereClause;
+        }
+
+        public String[] getWhereArgs() {
+            return whereArgs;
+        }
+
+        public void setWhereArgs(String[] whereArgs) {
+            this.whereArgs = whereArgs;
+        }
+
+        //查询条件 name = ? && password = ?
+        private String whereClause;
+        private String[] whereArgs;
+        public Condition(Map<String, String> whereClause) {
+            ArrayList list = new ArrayList();
+            StringBuilder builder = new StringBuilder();
+            builder.append(" 1=1 ");
+            Set keys = whereClause.keySet();
+            Iterator iterator = keys.iterator();
+            while (iterator.hasNext()) {
+                String key = (String) iterator.next();
+                String value = whereClause.get(key);
+                if (value != null) {
+                    //拼接条件查询语句
+                    builder.append(" and " + key + " =?");
+                    list.add(value);
+                }
+            }
+            this.whereClause = builder.toString();
+            this.whereArgs = (String[]) list.toArray(new String[list.size()]);
+        }
+
+    }
+
+    @Override
+    public int delete(T where) {
+        return 0;
+    }
+
+    @Override
+    public List<T> query(T where) {
+        return null;
+    }
+
+    @Override
+    public List<T> query(T where, String orderBy, Integer startIndex, Integer limit) {
         return null;
     }
 
