@@ -26,5 +26,11 @@
         android:text="delete"
         android:onClick="delete"
         android:gravity="center"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="query"
+        android:onClick="query"
+        android:gravity="center"/>
 
 </LinearLayout>

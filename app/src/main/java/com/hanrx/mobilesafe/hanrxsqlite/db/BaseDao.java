@@ -234,12 +234,69 @@ public abstract class BaseDao<T> implements IBaseDao<T> {
 
     @Override
     public List<T> query(T where) {
-        return null;
+
+        return query(where, null, null, null);
     }
 
     @Override
     public List<T> query(T where, String orderBy, Integer startIndex, Integer limit) {
-        return null;
+        Map map = getValues(where);
+        String limitString = null;
+        if (startIndex != null && limit != null) {
+            limitString = startIndex + " , " + limit;
+        }
+
+        Condition condition = new Condition(map);
+        Cursor cursor = mDatabase.query(tableName, null, condition.getWhereClause(),
+                condition.getWhereArgs(), null,null,orderBy,limitString);
+        List<T> result = getResult(cursor,where);
+        cursor.close();
+        return result;
+    }
+
+    private List<T> getResult(Cursor cursor, T where) {
+        ArrayList list = new ArrayList();
+
+        Object item;
+        while(cursor.moveToNext()) {
+            try {
+                item = where.getClass().newInstance();
+                Iterator iterator = cacheMap.entrySet().iterator();
+                while (iterator.hasNext()) {
+                    Map.Entry entry = (Map.Entry) iterator.next();
+                    //得到列名
+                    String colomnName = (String) entry.getKey();
+                    //然后以列名拿到 列名在游标的位置
+                    Integer columnIndex = cursor.getColumnIndex(colomnName);
+                    Field field = (Field) entry.getValue();
+                    Class type = field.getType();
+                    if(columnIndex != -1) {
+                        if (type == String.class) {
+                            //反射方式赋值
+                            field.set(item, cursor.getString(columnIndex));
+                        } else if (type == Double.class) {
+                            field.set(item, cursor.getDouble(columnIndex));
+                        } else if (type == Integer.class) {
+                            field.set(item, cursor.getInt(columnIndex));
+                        } else if (type == Long.class) {
+                            field.set(item, cursor.getLong(columnIndex));
+                        } else if (type == byte[].class) {
+                            field.set(item, cursor.getBlob(columnIndex));
+                        }else {
+                            //不支持的类型
+                            continue;
+                        }
+                    }
+                }
+                list.add(item);
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return list;
     }
 
     /**

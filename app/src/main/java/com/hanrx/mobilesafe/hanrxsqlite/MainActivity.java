@@ -2,12 +2,17 @@ package com.hanrx.mobilesafe.hanrxsqlite;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.hanrx.mobilesafe.hanrxsqlite.db.BaseDaoFactory;
 import com.hanrx.mobilesafe.hanrxsqlite.db.IBaseDao;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
+
+    private static final String TAG = "hanrx";
 
     IBaseDao<User> mBaseDao;
 
@@ -36,5 +41,15 @@ public class MainActivity extends AppCompatActivity {
         User user = new User();
         user.setName("David");
         mBaseDao.delete(user);
+    }
+
+    public void query(View view) {
+        User user = new User();
+        user.setName("teacher");
+        List<User> list = mBaseDao.query(user);
+        Log.i(TAG, "查询到 " + list.size() + " 条数据");
+        for (User user1:list) {
+            Log.i(TAG, user1.toString());
+        }
     }
 }
